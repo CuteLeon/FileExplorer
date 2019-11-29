@@ -33,6 +33,9 @@ namespace FileExplorer
                 List<Node> nodes = Explorer.ExploreRootByRecursion(rootDirectory);
                 Printer.PrintList(nodes);
                 Console.WriteLine("输出完毕！");
+                
+                nodes.Clear();
+                GC.Collect();
             }
         }
     }
