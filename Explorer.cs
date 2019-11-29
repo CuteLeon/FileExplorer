@@ -90,18 +90,14 @@ namespace FileExplorer
         public static List<Node> ExploreRootByRecursion(string rootDirectory)
         {
             var rootInfo = new DirectoryInfo(rootDirectory);
-            _ = ExploreRootByRecursion(rootInfo, 0);
+            var nodes = new List<Node>();
+            var rootNode = ExploreRootByRecursion(rootInfo, 0, nodes);
 
             // 标记根节点
-            if (Nodes.Count > 0)
-            {
-                Nodes.First().IsLast = true;
-            }
-            return Nodes;
-        }
+            rootNode.IsLast = true;
 
-        // 使用全局变量，降低子列表空间复杂度
-        private static List<Node> Nodes = new List<Node>();
+            return nodes;
+        }
 
         /// <summary>
         /// 递归方法
@@ -109,7 +105,7 @@ namespace FileExplorer
         /// <param name="rootInfo"></param>
         /// <param name="layoutNumber"></param>
         /// <returns></returns>
-        private static Node ExploreRootByRecursion(DirectoryInfo rootInfo, int layoutNumber)
+        private static Node ExploreRootByRecursion(DirectoryInfo rootInfo, int layoutNumber, List<Node> nodes)
         {
             // 当前目录节点
             Node parentNode = new Node()
@@ -118,14 +114,14 @@ namespace FileExplorer
                 Name = rootInfo.Name,
                 LayoutNumber = layoutNumber,
             };
-            Nodes.Add(parentNode);
+            nodes.Add(parentNode);
             int count = 0;
 
             // 扫描子目录
             count = rootInfo.GetDirectories().Select(childInfo =>
             {
                 // 递归子目录
-                var childNode = ExploreRootByRecursion(childInfo, layoutNumber + 1);
+                var childNode = ExploreRootByRecursion(childInfo, layoutNumber + 1, nodes);
                 return childNode;
             }).Select(childNode =>
             {
@@ -144,7 +140,7 @@ namespace FileExplorer
             }).Select(childNode =>
             {
                 parentNode.Children.Add(childNode);
-                Nodes.Add(childNode);
+                nodes.Add(childNode);
                 return childNode;
             }).Count();
 

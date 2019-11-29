@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace FileExplorer
 {
@@ -8,17 +8,33 @@ namespace FileExplorer
     {
         private static void Main(string[] args)
         {
-            List<Node> nodes = null;
+            string rootDirectory = string.Empty;
 
-            nodes = Explorer.ExploreRootByStack(@"..\..\..\");
-            // Printer.PrintLineLite(nodes);
-            Printer.PrintList(nodes);
+            static string InputRootDirectory()
+            {
+                Console.WriteLine("请输入根目录 (输入 exit 退出)：");
+                Console.Write("\t");
+                return Console.ReadLine();
+            }
 
-            nodes = Explorer.ExploreRootByRecursion(@"..\..\..\");
-            // Printer.PrintLineLite(nodes);
-            Printer.PrintList(nodes);
+            while ((rootDirectory = InputRootDirectory()) != "exit")
+            {
+                if (string.IsNullOrEmpty(rootDirectory))
+                {
+                    rootDirectory = @".\";
+                }
+                if (!Directory.Exists(rootDirectory))
+                {
+                    Console.WriteLine($"不存在的目录：{rootDirectory}");
+                    continue;
+                }
 
-            Console.ReadLine();
+                // nodes = Explorer.ExploreRootByStack(rootDirectory);
+                // Printer.PrintLineLite(nodes);
+                List<Node> nodes = Explorer.ExploreRootByRecursion(rootDirectory);
+                Printer.PrintList(nodes);
+                Console.WriteLine("输出完毕！");
+            }
         }
     }
 }
