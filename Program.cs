@@ -8,8 +8,6 @@ namespace FileExplorer
     {
         private static void Main(string[] args)
         {
-            string rootDirectory = string.Empty;
-
             static string InputRootDirectory()
             {
                 Console.WriteLine("请输入根目录 (输入 exit 退出)：");
@@ -17,6 +15,7 @@ namespace FileExplorer
                 return Console.ReadLine();
             }
 
+            string rootDirectory;
             while ((rootDirectory = InputRootDirectory()) != "exit")
             {
                 if (string.IsNullOrEmpty(rootDirectory))
