@@ -57,6 +57,8 @@ namespace FileExplorer
                 line = $"{prefix}{(node.IsLast ? "└" : "├")}{(node.Children.Count == 0 ? "─" : "┬")} {node.Name}";
                 Console.WriteLine(line);
             }
+
+            prefixes.Clear();
         }
     }
 }
