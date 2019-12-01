@@ -19,7 +19,7 @@ namespace FileExplorer
             Node rootNode = new Node()
             {
                 Path = rootInfo.FullName,
-                Name = rootInfo.Name,
+                Name = $@"{rootInfo.Name}\",
                 LayoutNumber = 0,
                 IsLast = true
             };
@@ -111,7 +111,7 @@ namespace FileExplorer
             Node parentNode = new Node()
             {
                 Path = rootInfo.FullName,
-                Name = rootInfo.Name,
+                Name = $@"{rootInfo.Name}\",
                 LayoutNumber = layoutNumber,
             };
             nodes.Add(parentNode);
