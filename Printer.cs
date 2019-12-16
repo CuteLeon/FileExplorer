@@ -27,36 +27,26 @@ namespace FileExplorer
             Console.WriteLine("——<<<完整树输出：>>>——");
             Dictionary<string, string> prefixes = new Dictionary<string, string>();
 
+            string GetParentPrefix(Node parentNode)
+            {
+                if (parentNode == null) return string.Empty;
+                if (prefixes.TryGetValue(parentNode.Path, out string parentPrefix)) return parentPrefix;
+                parentPrefix = $"{GetParentPrefix(parentNode.Parent)}{(parentNode.IsLast ? " " : "│")}";
+                prefixes.Add(parentNode.Path, parentPrefix);
+                return parentPrefix;
+            }
+
             foreach (var node in nodes)
             {
                 string prefix = string.Empty;
                 string line = string.Empty;
-                if (node.Parent != null)
-                {
-                    // 存在祖节点的节点需要计算祖节点的其他子节点的竖线，并使用字典缓存，实现 O(1) 时间复杂度
-                    if (!prefixes.TryGetValue(node.Parent.Path, out prefix))
-                    {
-                        prefix = $"{string.Empty.PadRight(node.LayoutNumber, ' ')}";
-                        List<int> indexes = new List<int>();
-                        var parent = node.Parent;
-                        while (parent != null)
-                        {
-                            if (!parent.IsLast)
-                            {
-                                indexes.Add(parent.LayoutNumber);
-                            }
-                            parent = parent.Parent;
-                        }
-                        var chars = prefix.ToCharArray();
-                        indexes.ForEach(index => chars[index] = '│');
-                        prefix = new string(chars);
-                        prefixes.Add(node.Parent.Path, prefix);
-                    }
-                }
+                prefix = GetParentPrefix(node.Parent);
 
                 line = $"{prefix}{(node.IsLast ? "└" : "├")}{(node.Children.Count == 0 ? "─" : "┬")} {node.Name}";
                 Console.WriteLine(line);
             }
+
+            prefixes.Clear();
         }
     }
 }
