@@ -3,4 +3,4 @@
 
 使用递归或堆栈扫描目录结构，并使用Linq或字典输出；
 
-![](./ReadMe/Screen.png)
+![](https://raw.github.com/CuteLeon/FileExplorer/master/ReadMe/Screen.png)
